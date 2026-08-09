@@ -1,0 +1,12 @@
+[ ] Save all files
+[ ] initializeCCCSystem succeeds
+[ ] testCCCConnections succeeds
+[ ] Web app opens
+[ ] Eligible dates appear
+[ ] Times appear from 2:00 PM to 4:30 PM
+[ ] Calendar conflicts and 30-minute buffers block slots
+[ ] Booking creates one event
+[ ] Database rows are written
+[ ] Audit row is written
+[ ] Internal and client emails arrive
+[ ] Confirmation number is CCC-YYYYMMDD-NNN

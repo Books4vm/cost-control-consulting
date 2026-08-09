@@ -1,1 +1,16 @@
-const t=document.querySelector('.menu-toggle'),m=document.querySelector('.primary-menu'),n=document.getElementById('notice');if(t&&m)t.addEventListener('click',()=>{const o=m.classList.toggle('open');t.setAttribute('aria-expanded',String(o))});document.querySelectorAll('[data-coming-soon]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();n.textContent=`${a.dataset.comingSoon} will be added in the next development step.`;n.classList.add('show');clearTimeout(window.cccTimer);window.cccTimer=setTimeout(()=>n.classList.remove('show'),2600)}));
+const menuToggle = document.querySelector(".menu-toggle");
+const primaryMenu = document.querySelector(".primary-menu");
+
+if (menuToggle && primaryMenu) {
+  menuToggle.addEventListener("click", () => {
+    const isOpen = primaryMenu.classList.toggle("open");
+    menuToggle.setAttribute("aria-expanded", String(isOpen));
+  });
+
+  primaryMenu.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      primaryMenu.classList.remove("open");
+      menuToggle.setAttribute("aria-expanded", "false");
+    });
+  });
+}
