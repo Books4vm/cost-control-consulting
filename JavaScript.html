@@ -1,1 +1,979 @@
-<script>(function(){var step=1,slot=null,token="",visitor=localStorage.getItem("cccVisitor")||(crypto.randomUUID?crypto.randomUUID():String(Date.now())),f=document.getElementById("f"),date=document.getElementById("date"),time=document.getElementById("time"),msg=document.getElementById("msg");localStorage.setItem("cccVisitor",visitor);function show(){document.querySelectorAll(".step").forEach(function(x){x.classList.toggle("active",+x.dataset.step===step)});document.getElementById("stepLabel").textContent="Step "+step+" of 4";document.getElementById("bar").style.width=(step*25)+"%";document.getElementById("back").disabled=step===1;document.getElementById("next").classList.toggle("hidden",step===4);document.getElementById("confirm").classList.toggle("hidden",step!==4);if(step===4&&date.options.length<2)loadDates()}function error(t){msg.textContent=t;msg.classList.remove("hidden")}function clear(){msg.classList.add("hidden")}function valid(){var a=document.querySelector('.step[data-step="'+step+'"]');for(var x of a.querySelectorAll("input,select,textarea")){if(!x.checkValidity()){x.reportValidity();return false}}if(step===4&&!slot){error("Please select a date and time.");return false}return true}function loadDates(){google.script.run.withSuccessHandler(function(r){if(!r.success)return error(r.message);date.innerHTML='<option value="">Select a date</option>';r.data.forEach(function(x){date.innerHTML+='<option value="'+x.isoDate+'">'+x.displayDate+' ('+x.availableSlotCount+' available)</option>'})}).getAvailableDates(token,visitor)}date.onchange=function(){slot=null;time.disabled=true;if(!date.value)return;google.script.run.withSuccessHandler(function(r){if(!r.success)return error(r.message);time.innerHTML='<option value="">Select a time</option>';r.data.forEach(function(x,i){var o=document.createElement("option");o.value=i;o.textContent=x.displayTime;o.dataset.slot=JSON.stringify(x);time.appendChild(o)});time.disabled=false}).getAvailableTimes(token,visitor,date.value)};time.onchange=function(){var o=time.options[time.selectedIndex];slot=o&&o.dataset.slot?JSON.parse(o.dataset.slot):null};document.getElementById("next").onclick=function(){clear();if(valid()){step++;show()}};document.getElementById("back").onclick=function(){if(step>1){step--;show()}};f.onsubmit=function(e){e.preventDefault();clear();if(!valid())return;var d={},fd=new FormData(f);fd.forEach(function(v,k){if(k==="businessChallenges"){d[k]=d[k]||[];d[k].push(v)}else d[k]=v});d.businessChallenges=d.businessChallenges||[];d.consentToContact=f.elements.consentToContact.checked;d.sessionToken=token;d.visitorId=visitor;d.submissionToken=crypto.randomUUID?crypto.randomUUID():String(Date.now());d.slotStart=slot.start;d.slotEnd=slot.end;google.script.run.withSuccessHandler(function(r){if(!r.success)return error(r.message);f.classList.add("hidden");document.getElementById("done").innerHTML='<h2>Consultation Confirmed</h2><strong>'+r.data.appointmentId+'</strong><p>'+r.data.appointmentDate+'<br>'+r.data.appointmentTime+'<br>'+r.data.timeZone+'</p>';document.getElementById("done").classList.remove("hidden")}).confirmConsultation(d)};google.script.run.withSuccessHandler(function(r){if(!r.success)return error(r.message);token=r.data.sessionToken;show()}).createSchedulerSession(visitor)})();</script>
+<script>
+(function () {
+
+  "use strict";
+
+  var step = 1;
+
+  var slot = null;
+  var selectedDate = "";
+  var selectedDisplayDate = "";
+
+  var token = "";
+
+  var visitor =
+    localStorage.getItem("cccVisitor") ||
+    (
+      window.crypto &&
+      crypto.randomUUID
+        ? crypto.randomUUID()
+        : String(Date.now())
+    );
+
+  localStorage.setItem(
+    "cccVisitor",
+    visitor
+  );
+
+
+  /* --------------------------------------------------------
+     ELEMENTS
+  -------------------------------------------------------- */
+
+  var form =
+    document.getElementById("f");
+
+  var message =
+    document.getElementById("msg");
+
+  var calendarGrid =
+    document.getElementById(
+      "calendarGrid"
+    );
+
+  var calendarLoading =
+    document.getElementById(
+      "calendarLoading"
+    );
+
+  var calendarContent =
+    document.getElementById(
+      "calendarContent"
+    );
+
+  var timeGrid =
+    document.getElementById(
+      "timeGrid"
+    );
+
+  var timeLoading =
+    document.getElementById(
+      "timeLoading"
+    );
+
+  var timeTitle =
+    document.getElementById(
+      "timeTitle"
+    );
+
+  var timeHelp =
+    document.getElementById(
+      "timeHelp"
+    );
+
+  var selectedAppointment =
+    document.getElementById(
+      "selectedAppointment"
+    );
+
+  var backButton =
+    document.getElementById("back");
+
+  var nextButton =
+    document.getElementById("next");
+
+  var confirmButton =
+    document.getElementById(
+      "confirm"
+    );
+
+  var refreshCalendarButton =
+    document.getElementById(
+      "refreshCalendar"
+    );
+
+  var calendarLoaded = false;
+
+
+  /* --------------------------------------------------------
+     GENERAL UI
+  -------------------------------------------------------- */
+
+  function show() {
+
+    document
+      .querySelectorAll(".step")
+      .forEach(function (section) {
+
+        section.classList.toggle(
+          "active",
+          Number(section.dataset.step) === step
+        );
+
+      });
+
+
+    document.getElementById(
+      "stepLabel"
+    ).textContent =
+      "Step " + step + " of 4";
+
+
+    document.getElementById(
+      "bar"
+    ).style.width =
+      (step * 25) + "%";
+
+
+    backButton.disabled =
+      step === 1;
+
+
+    nextButton.classList.toggle(
+      "hidden",
+      step === 4
+    );
+
+
+    confirmButton.classList.toggle(
+      "hidden",
+      step !== 4
+    );
+
+
+    /*
+     * Load the Calendar only when Step 4 is reached.
+     */
+    if (
+      step === 4 &&
+      !calendarLoaded
+    ) {
+      loadCalendar();
+    }
+  }
+
+
+  function showError(text) {
+    message.textContent =
+      text ||
+      "We could not complete the request.";
+
+    message.classList.remove(
+      "hidden"
+    );
+
+    message.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest"
+    });
+  }
+
+
+  function clearError() {
+    message.textContent = "";
+    message.classList.add(
+      "hidden"
+    );
+  }
+
+
+  function serverFailure(error) {
+    console.error(error);
+
+    var text =
+      error &&
+      error.message
+        ? error.message
+        : "We could not complete the request. Please try again.";
+
+    showError(text);
+  }
+
+
+  /* --------------------------------------------------------
+     FORM VALIDATION
+  -------------------------------------------------------- */
+
+  function validateCurrentStep() {
+
+    clearError();
+
+    var section =
+      document.querySelector(
+        '.step[data-step="' +
+        step +
+        '"]'
+      );
+
+
+    var fields =
+      section.querySelectorAll(
+        "input, select, textarea"
+      );
+
+
+    for (
+      var i = 0;
+      i < fields.length;
+      i++
+    ) {
+      if (
+        !fields[i].checkValidity()
+      ) {
+        fields[i].reportValidity();
+        return false;
+      }
+    }
+
+
+    if (
+      step === 4 &&
+      !slot
+    ) {
+      showError(
+        "Please select an available date and appointment time."
+      );
+
+      return false;
+    }
+
+
+    return true;
+  }
+
+
+  /* --------------------------------------------------------
+     CALENDAR
+  -------------------------------------------------------- */
+
+  function loadCalendar() {
+
+    clearError();
+
+    calendarLoaded = false;
+
+    calendarGrid.innerHTML = "";
+
+    calendarContent.classList.add(
+      "hidden"
+    );
+
+    calendarLoading.classList.remove(
+      "hidden"
+    );
+
+    calendarLoading.textContent =
+      "Checking CCC calendar availability...";
+
+
+    google.script.run
+      .withFailureHandler(
+        function (error) {
+
+          calendarLoading.classList.add(
+            "hidden"
+          );
+
+          serverFailure(error);
+        }
+      )
+      .withSuccessHandler(
+        function (result) {
+
+          calendarLoading.classList.add(
+            "hidden"
+          );
+
+
+          if (
+            !result ||
+            !result.success
+          ) {
+            showError(
+              result &&
+              result.message
+                ? result.message
+                : "Calendar availability could not be loaded."
+            );
+
+            return;
+          }
+
+
+          renderCalendar(
+            result.data
+          );
+
+          calendarLoaded = true;
+        }
+      )
+      .getCalendarAvailability(
+        token,
+        visitor
+      );
+  }
+
+
+  function renderCalendar(data) {
+
+    calendarGrid.innerHTML = "";
+
+    var dates =
+      data &&
+      Array.isArray(data.dates)
+        ? data.dates
+        : [];
+
+
+    dates.forEach(
+      function (item) {
+
+        var day =
+          document.createElement(
+            item.selectable
+              ? "button"
+              : "div"
+          );
+
+
+        if (item.selectable) {
+          day.type = "button";
+        }
+
+
+        day.className =
+          "calendar-day status-" +
+          item.status;
+
+
+        day.dataset.date =
+          item.isoDate;
+
+
+        day.setAttribute(
+          "role",
+          "gridcell"
+        );
+
+
+        var statusText =
+          calendarStatusText(item);
+
+
+        day.setAttribute(
+          "aria-label",
+          item.displayDate +
+          ". " +
+          statusText
+        );
+
+
+        day.innerHTML =
+          '<span class="month">' +
+          escapeHtml(item.monthShort) +
+          "</span>" +
+
+          '<span class="number">' +
+          escapeHtml(
+            String(item.dayNumber)
+          ) +
+          "</span>" +
+
+          '<span class="availability">' +
+          escapeHtml(statusText) +
+          "</span>";
+
+
+        if (item.selectable) {
+
+          day.addEventListener(
+            "click",
+            function () {
+
+              selectCalendarDate(
+                item,
+                day
+              );
+
+            }
+          );
+
+        }
+
+
+        calendarGrid.appendChild(day);
+
+      }
+    );
+
+
+    calendarContent.classList.remove(
+      "hidden"
+    );
+  }
+
+
+  function calendarStatusText(item) {
+
+    switch (item.status) {
+
+      case "available":
+        return (
+          item.availableSlotCount +
+          (
+            item.availableSlotCount === 1
+              ? " time"
+              : " times"
+          )
+        );
+
+      case "full":
+        return "Full";
+
+      case "weekend":
+        return "Weekend";
+
+      case "past":
+        return "Past";
+
+      case "lead":
+        return "Unavailable";
+
+      case "outside":
+        return "Unavailable";
+
+      default:
+        return "Unavailable";
+    }
+  }
+
+
+  function selectCalendarDate(
+    item,
+    button
+  ) {
+
+    clearError();
+
+    selectedDate =
+      item.isoDate;
+
+    selectedDisplayDate =
+      item.displayDate;
+
+    slot = null;
+
+
+    document
+      .querySelectorAll(
+        ".calendar-day.selected"
+      )
+      .forEach(
+        function (element) {
+          element.classList.remove(
+            "selected"
+          );
+        }
+      );
+
+
+    button.classList.add(
+      "selected"
+    );
+
+
+    selectedAppointment.classList.add(
+      "hidden"
+    );
+
+    selectedAppointment.innerHTML = "";
+
+
+    loadTimes(
+      selectedDate,
+      selectedDisplayDate
+    );
+  }
+
+
+  /* --------------------------------------------------------
+     TIMES
+  -------------------------------------------------------- */
+
+  function loadTimes(
+    isoDate,
+    displayDate
+  ) {
+
+    clearError();
+
+    slot = null;
+
+    timeGrid.innerHTML = "";
+
+    timeTitle.textContent =
+      "Available Times";
+
+    timeHelp.textContent =
+      displayDate +
+      " · Pacific Time";
+
+    timeLoading.classList.remove(
+      "hidden"
+    );
+
+
+    google.script.run
+      .withFailureHandler(
+        function (error) {
+
+          timeLoading.classList.add(
+            "hidden"
+          );
+
+          serverFailure(error);
+        }
+      )
+      .withSuccessHandler(
+        function (result) {
+
+          timeLoading.classList.add(
+            "hidden"
+          );
+
+
+          if (
+            !result ||
+            !result.success
+          ) {
+            showError(
+              result &&
+              result.message
+                ? result.message
+                : "Available times could not be loaded."
+            );
+
+            return;
+          }
+
+
+          renderTimes(
+            result.data || [],
+            displayDate
+          );
+        }
+      )
+      .getAvailableTimes(
+        token,
+        visitor,
+        isoDate
+      );
+  }
+
+
+  function renderTimes(
+    slots,
+    displayDate
+  ) {
+
+    timeGrid.innerHTML = "";
+
+
+    if (!slots.length) {
+
+      timeGrid.innerHTML =
+        '<div class="no-times">' +
+        "No appointment times remain for this date." +
+        "</div>";
+
+      return;
+    }
+
+
+    slots.forEach(
+      function (item) {
+
+        var button =
+          document.createElement(
+            "button"
+          );
+
+        button.type = "button";
+
+        button.className =
+          "time-option";
+
+        button.textContent =
+          item.displayTime;
+
+
+        button.addEventListener(
+          "click",
+          function () {
+
+            document
+              .querySelectorAll(
+                ".time-option.selected"
+              )
+              .forEach(
+                function (element) {
+
+                  element.classList.remove(
+                    "selected"
+                  );
+
+                }
+              );
+
+
+            button.classList.add(
+              "selected"
+            );
+
+
+            slot = item;
+
+
+            selectedAppointment.innerHTML =
+              "<strong>Selected consultation</strong><br>" +
+              escapeHtml(displayDate) +
+              "<br>" +
+              escapeHtml(item.displayTime) +
+              " Pacific Time";
+
+
+            selectedAppointment.classList.remove(
+              "hidden"
+            );
+
+
+            clearError();
+          }
+        );
+
+
+        timeGrid.appendChild(
+          button
+        );
+
+      }
+    );
+  }
+
+
+  /* --------------------------------------------------------
+     NAVIGATION
+  -------------------------------------------------------- */
+
+  nextButton.addEventListener(
+    "click",
+    function () {
+
+      if (
+        validateCurrentStep()
+      ) {
+        step++;
+        show();
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+      }
+
+    }
+  );
+
+
+  backButton.addEventListener(
+    "click",
+    function () {
+
+      clearError();
+
+      if (step > 1) {
+        step--;
+        show();
+
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+      }
+
+    }
+  );
+
+
+  refreshCalendarButton.addEventListener(
+    "click",
+    function () {
+
+      selectedDate = "";
+      selectedDisplayDate = "";
+      slot = null;
+
+      timeGrid.innerHTML = "";
+
+      timeHelp.textContent =
+        "Choose a green available date to view appointment times.";
+
+      selectedAppointment.classList.add(
+        "hidden"
+      );
+
+      calendarLoaded = false;
+
+      loadCalendar();
+    }
+  );
+
+
+  /* --------------------------------------------------------
+     CONFIRM APPOINTMENT
+  -------------------------------------------------------- */
+
+  form.addEventListener(
+    "submit",
+    function (event) {
+
+      event.preventDefault();
+
+      clearError();
+
+
+      if (
+        !validateCurrentStep()
+      ) {
+        return;
+      }
+
+
+      var data = {};
+
+      var formData =
+        new FormData(form);
+
+
+      formData.forEach(
+        function (value, key) {
+
+          if (
+            key ===
+            "businessChallenges"
+          ) {
+
+            data[key] =
+              data[key] || [];
+
+            data[key].push(
+              value
+            );
+
+          } else {
+
+            data[key] =
+              value;
+
+          }
+
+        }
+      );
+
+
+      data.businessChallenges =
+        data.businessChallenges ||
+        [];
+
+
+      data.consentToContact =
+        form.elements
+          .consentToContact
+          .checked;
+
+
+      data.sessionToken =
+        token;
+
+
+      data.visitorId =
+        visitor;
+
+
+      data.submissionToken =
+        (
+          window.crypto &&
+          crypto.randomUUID
+        )
+          ? crypto.randomUUID()
+          : String(Date.now());
+
+
+      data.slotStart =
+        slot.start;
+
+
+      data.slotEnd =
+        slot.end;
+
+
+      confirmButton.disabled =
+        true;
+
+      confirmButton.textContent =
+        "Confirming...";
+
+
+      google.script.run
+        .withFailureHandler(
+          function (error) {
+
+            confirmButton.disabled =
+              false;
+
+            confirmButton.textContent =
+              "Confirm Appointment";
+
+            serverFailure(error);
+          }
+        )
+        .withSuccessHandler(
+          function (result) {
+
+            if (
+              !result ||
+              !result.success
+            ) {
+
+              confirmButton.disabled =
+                false;
+
+              confirmButton.textContent =
+                "Confirm Appointment";
+
+              showError(
+                result &&
+                result.message
+                  ? result.message
+                  : "The appointment could not be confirmed."
+              );
+
+              return;
+            }
+
+
+            form.classList.add(
+              "hidden"
+            );
+
+
+            document.getElementById(
+              "done"
+            ).innerHTML =
+              "<h2>Consultation Confirmed</h2>" +
+
+              "<p>Your CCC reference number is:</p>" +
+
+              "<strong>" +
+              escapeHtml(
+                result.data.appointmentId
+              ) +
+              "</strong>" +
+
+              "<p>" +
+              escapeHtml(
+                result.data.appointmentDate
+              ) +
+              "<br>" +
+
+              escapeHtml(
+                result.data.appointmentTime
+              ) +
+              "<br>" +
+
+              escapeHtml(
+                result.data.timeZone
+              ) +
+              "</p>" +
+
+              "<p>A confirmation has been sent by email.</p>";
+
+
+            document.getElementById(
+              "done"
+            ).classList.remove(
+              "hidden"
+            );
+
+
+            window.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+          }
+        )
+        .confirmConsultation(
+          data
+        );
+
+    }
+  );
+
+
+  /* --------------------------------------------------------
+     HTML SAFETY
+  -------------------------------------------------------- */
+
+  function escapeHtml(value) {
+
+    return String(
+      value == null ? "" : value
+    )
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+
+  /* --------------------------------------------------------
+     SESSION INITIALIZATION
+  -------------------------------------------------------- */
+
+  google.script.run
+    .withFailureHandler(
+      function (error) {
+        serverFailure(error);
+      }
+    )
+    .withSuccessHandler(
+      function (result) {
+
+        if (
+          !result ||
+          !result.success
+        ) {
+          showError(
+            result &&
+            result.message
+              ? result.message
+              : "The scheduling session could not be started."
+          );
+
+          return;
+        }
+
+
+        token =
+          result.data.sessionToken;
+
+
+        show();
+      }
+    )
+    .createSchedulerSession(
+      visitor
+    );
+
+})();
+</script>

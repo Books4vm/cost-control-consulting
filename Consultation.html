@@ -1,1 +1,602 @@
-<!DOCTYPE html><html><head><base target="_top"><?!= include("CSS"); ?></head><body><header><h1>Cost Control Consulting</h1><p>Clarity. Confidence. Compliance.</p></header><main><section class="card"><div class="progress"><span id="stepLabel">Step 1 of 4</span><div><b id="bar"></b></div></div><div id="msg" class="msg hidden"></div><form id="f"><section class="step active" data-step="1"><h2>About You</h2><div class="grid"><label>First Name*<input name="firstName" required></label><label>Last Name*<input name="lastName" required></label><label>Job Title<input name="jobTitle"></label><label>Email*<input name="email" type="email" required></label><label>Phone<input name="phone"></label><label>Preferred Contact Method<select name="preferredContactMethod"><option value="">Select</option><option>Email</option><option>Phone</option><option>Video Conference</option></select></label></div></section><section class="step" data-step="2"><h2>About Your Business</h2><div class="grid"><label>Company Name*<input name="companyName" required></label><label>Business Type*<select name="businessType" required><option value="">Select</option><option>Sole Proprietorship</option><option>Partnership</option><option>LLC</option><option>S Corporation</option><option>C Corporation</option><option>Nonprofit</option><option>Other</option></select></label><label>Industry*<input name="industry" required></label><label>Employees<select name="employeeRange"><option value="">Select</option><option>1</option><option>2-10</option><option>11-25</option><option>26-50</option><option>51-100</option><option>101-250</option><option>251+</option></select></label><label>Annual Revenue<select name="annualRevenueRange"><option value="">Select</option><option>Pre-revenue</option><option>Under $250,000</option><option>$250,000-$999,999</option><option>$1M-$4.99M</option><option>$5M-$24.99M</option><option>$25M-$99.99M</option><option>$100M+</option></select></label><label>Website<input name="website" placeholder="https://"></label><label>Accounting Software<input name="accountingSoftware"></label><label>ERP System<input name="erpSystem"></label></div></section><section class="step" data-step="3"><h2>How Can We Help?</h2><label>Primary Service*<select name="primaryAreaOfInterest" required><option value="">Select</option><option>Financial Analysis</option><option>Cost Reduction</option><option>Internal Controls</option><option>Budgeting and Forecasting</option><option>CFO Advisory</option><option>Financial Reporting</option><option>Accounting System Review</option><option>Tax Support</option><option>Process Improvement</option><option>Other</option></select></label><fieldset><legend>Business Challenges</legend><div class="checks"><label><input type="checkbox" name="businessChallenges" value="Cash Flow">Cash Flow</label><label><input type="checkbox" name="businessChallenges" value="Profitability">Profitability</label><label><input type="checkbox" name="businessChallenges" value="Cost Control">Cost Control</label><label><input type="checkbox" name="businessChallenges" value="Internal Controls">Internal Controls</label><label><input type="checkbox" name="businessChallenges" value="Reporting">Reporting</label><label><input type="checkbox" name="businessChallenges" value="Compliance">Compliance</label></div></fieldset><label>Describe the Business Challenge*<textarea name="businessChallengeDescription" required></textarea></label><label>Desired Outcome<textarea name="desiredOutcome"></textarea></label></section><section class="step" data-step="4"><h2>Choose Date and Time</h2><div class="grid"><label>Date*<select id="date" required><option value="">Loading...</option></select></label><label>Time*<select id="time" required disabled><option value="">Select a date</option></select></label></div><label class="consent"><input type="checkbox" name="consentToContact" required>I confirm the information and authorize CCC to contact me.</label><div id="review"></div></section><div class="actions"><button type="button" id="back" class="secondary">Back</button><button type="button" id="next">Next</button><button type="submit" id="confirm" class="hidden">Confirm Appointment</button></div></form><section id="done" class="hidden done"></section></section></main><footer>Cost Control Consulting</footer><?!= include("JavaScript"); ?></body></html>
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <?!= include("CSS"); ?>
+</head>
+
+<body>
+
+<header class="ccc-header">
+  <div class="ccc-header-inner">
+    <h1>Cost Control Consulting</h1>
+    <p>Clarity. Confidence. Compliance.</p>
+  </div>
+</header>
+
+<main class="page-shell">
+
+  <section class="card">
+
+    <div class="progress">
+      <span id="stepLabel">Step 1 of 4</span>
+
+      <div class="progress-track">
+        <b id="bar"></b>
+      </div>
+    </div>
+
+    <div
+      id="msg"
+      class="msg hidden"
+      role="alert"
+      aria-live="assertive">
+    </div>
+
+    <form id="f" novalidate>
+
+      <!-- STEP 1 -->
+      <section
+        class="step active"
+        data-step="1">
+
+        <h2>About You</h2>
+
+        <p class="step-intro">
+          Tell us who we will be speaking with.
+        </p>
+
+        <div class="grid">
+
+          <label>
+            First Name*
+            <input
+              name="firstName"
+              autocomplete="given-name"
+              required>
+          </label>
+
+          <label>
+            Last Name*
+            <input
+              name="lastName"
+              autocomplete="family-name"
+              required>
+          </label>
+
+          <label>
+            Job Title
+            <input
+              name="jobTitle"
+              autocomplete="organization-title">
+          </label>
+
+          <label>
+            Email*
+            <input
+              name="email"
+              type="email"
+              autocomplete="email"
+              required>
+          </label>
+
+          <label>
+            Phone
+            <input
+              name="phone"
+              type="tel"
+              autocomplete="tel">
+          </label>
+
+          <label>
+            Preferred Contact Method
+
+            <select
+              name="preferredContactMethod">
+
+              <option value="">
+                Select
+              </option>
+
+              <option>Email</option>
+              <option>Phone</option>
+              <option>Video Conference</option>
+
+            </select>
+          </label>
+
+        </div>
+      </section>
+
+
+      <!-- STEP 2 -->
+      <section
+        class="step"
+        data-step="2">
+
+        <h2>About Your Business</h2>
+
+        <p class="step-intro">
+          Provide a few details so we can prepare for the consultation.
+        </p>
+
+        <div class="grid">
+
+          <label>
+            Company Name*
+            <input
+              name="companyName"
+              autocomplete="organization"
+              required>
+          </label>
+
+          <label>
+            Business Type*
+
+            <select
+              name="businessType"
+              required>
+
+              <option value="">
+                Select
+              </option>
+
+              <option>
+                Sole Proprietorship
+              </option>
+
+              <option>
+                Partnership
+              </option>
+
+              <option>
+                LLC
+              </option>
+
+              <option>
+                S Corporation
+              </option>
+
+              <option>
+                C Corporation
+              </option>
+
+              <option>
+                Nonprofit
+              </option>
+
+              <option>
+                Other
+              </option>
+
+            </select>
+          </label>
+
+          <label>
+            Industry*
+            <input
+              name="industry"
+              required>
+          </label>
+
+          <label>
+            Employees
+
+            <select
+              name="employeeRange">
+
+              <option value="">
+                Select
+              </option>
+
+              <option>1</option>
+              <option>2-10</option>
+              <option>11-25</option>
+              <option>26-50</option>
+              <option>51-100</option>
+              <option>101-250</option>
+              <option>251+</option>
+
+            </select>
+          </label>
+
+          <label>
+            Annual Revenue
+
+            <select
+              name="annualRevenueRange">
+
+              <option value="">
+                Select
+              </option>
+
+              <option>Pre-revenue</option>
+              <option>Under $250,000</option>
+              <option>$250,000-$999,999</option>
+              <option>$1M-$4.99M</option>
+              <option>$5M-$24.99M</option>
+              <option>$25M-$99.99M</option>
+              <option>$100M+</option>
+
+            </select>
+          </label>
+
+          <label>
+            Website
+            <input
+              name="website"
+              placeholder="https://">
+          </label>
+
+          <label>
+            Accounting Software
+            <input
+              name="accountingSoftware">
+          </label>
+
+          <label>
+            ERP System
+            <input
+              name="erpSystem">
+          </label>
+
+        </div>
+      </section>
+
+
+      <!-- STEP 3 -->
+      <section
+        class="step"
+        data-step="3">
+
+        <h2>How Can We Help?</h2>
+
+        <p class="step-intro">
+          Tell us what you would like to discuss.
+        </p>
+
+        <label>
+          Primary Service*
+
+          <select
+            name="primaryAreaOfInterest"
+            required>
+
+            <option value="">
+              Select
+            </option>
+
+            <option>
+              Financial Analysis
+            </option>
+
+            <option>
+              Cost Reduction
+            </option>
+
+            <option>
+              Internal Controls
+            </option>
+
+            <option>
+              Budgeting and Forecasting
+            </option>
+
+            <option>
+              CFO Advisory
+            </option>
+
+            <option>
+              Financial Reporting
+            </option>
+
+            <option>
+              Accounting System Review
+            </option>
+
+            <option>
+              Tax Support
+            </option>
+
+            <option>
+              Process Improvement
+            </option>
+
+            <option>
+              Other
+            </option>
+
+          </select>
+        </label>
+
+
+        <fieldset>
+
+          <legend>
+            Business Challenges
+          </legend>
+
+          <div class="checks">
+
+            <label>
+              <input
+                type="checkbox"
+                name="businessChallenges"
+                value="Cash Flow">
+              Cash Flow
+            </label>
+
+            <label>
+              <input
+                type="checkbox"
+                name="businessChallenges"
+                value="Profitability">
+              Profitability
+            </label>
+
+            <label>
+              <input
+                type="checkbox"
+                name="businessChallenges"
+                value="Cost Control">
+              Cost Control
+            </label>
+
+            <label>
+              <input
+                type="checkbox"
+                name="businessChallenges"
+                value="Internal Controls">
+              Internal Controls
+            </label>
+
+            <label>
+              <input
+                type="checkbox"
+                name="businessChallenges"
+                value="Reporting">
+              Reporting
+            </label>
+
+            <label>
+              <input
+                type="checkbox"
+                name="businessChallenges"
+                value="Compliance">
+              Compliance
+            </label>
+
+          </div>
+
+        </fieldset>
+
+
+        <label>
+          Describe the Business Challenge*
+
+          <textarea
+            name="businessChallengeDescription"
+            required></textarea>
+        </label>
+
+
+        <label>
+          Desired Outcome
+
+          <textarea
+            name="desiredOutcome"></textarea>
+        </label>
+
+      </section>
+
+
+      <!-- STEP 4 -->
+      <section
+        class="step"
+        data-step="4">
+
+        <div class="scheduler-heading">
+
+          <div>
+            <h2>Choose Date and Time</h2>
+
+            <p class="step-intro">
+              Select an available consultation date and then choose a time.
+            </p>
+          </div>
+
+          <div class="timezone-badge">
+            Pacific Time
+          </div>
+
+        </div>
+
+
+        <div class="scheduler-layout">
+
+          <!-- CALENDAR -->
+          <section class="calendar-card">
+
+            <div class="calendar-title-row">
+
+              <div>
+                <h3>Available Dates</h3>
+
+                <p>
+                  Next five weeks
+                </p>
+              </div>
+
+              <button
+                type="button"
+                id="refreshCalendar"
+                class="text-button">
+                Refresh
+              </button>
+
+            </div>
+
+
+            <div
+              class="calendar-legend"
+              aria-label="Calendar availability legend">
+
+              <span>
+                <i class="legend-dot available"></i>
+                Available
+              </span>
+
+              <span>
+                <i class="legend-dot full"></i>
+                Full
+              </span>
+
+              <span>
+                <i class="legend-dot unavailable"></i>
+                Unavailable
+              </span>
+
+            </div>
+
+
+            <div
+              id="calendarLoading"
+              class="calendar-loading">
+              Checking CCC calendar availability...
+            </div>
+
+
+            <div
+              id="calendarContent"
+              class="hidden">
+
+              <div
+                class="calendar-weekdays"
+                aria-hidden="true">
+
+                <span>Sun</span>
+                <span>Mon</span>
+                <span>Tue</span>
+                <span>Wed</span>
+                <span>Thu</span>
+                <span>Fri</span>
+                <span>Sat</span>
+
+              </div>
+
+              <div
+                id="calendarGrid"
+                class="calendar-grid"
+                role="grid"
+                aria-label="Available consultation dates">
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- TIMES -->
+          <section class="time-card">
+
+            <h3 id="timeTitle">
+              Available Times
+            </h3>
+
+            <p
+              id="timeHelp"
+              class="time-help">
+              Choose a green available date to view appointment times.
+            </p>
+
+            <div
+              id="timeLoading"
+              class="time-loading hidden">
+              Checking available times...
+            </div>
+
+            <div
+              id="timeGrid"
+              class="time-grid"
+              role="group"
+              aria-label="Available appointment times">
+            </div>
+
+          </section>
+
+        </div>
+
+
+        <div
+          id="selectedAppointment"
+          class="selection-summary hidden"
+          aria-live="polite">
+        </div>
+
+
+        <label class="consent">
+
+          <input
+            type="checkbox"
+            name="consentToContact"
+            required>
+
+          <span>
+            I confirm the information above and authorize
+            Cost Control Consulting to contact me regarding
+            this consultation request.
+          </span>
+
+        </label>
+
+      </section>
+
+
+      <!-- ACTIONS -->
+      <div class="actions">
+
+        <button
+          type="button"
+          id="back"
+          class="secondary">
+          Back
+        </button>
+
+        <button
+          type="button"
+          id="next">
+          Next
+        </button>
+
+        <button
+          type="submit"
+          id="confirm"
+          class="hidden">
+          Confirm Appointment
+        </button>
+
+      </div>
+
+    </form>
+
+
+    <section
+      id="done"
+      class="hidden done"
+      aria-live="polite">
+    </section>
+
+  </section>
+
+</main>
+
+
+<footer class="ccc-footer">
+  Cost Control Consulting
+</footer>
+
+
+<?!= include("JavaScript"); ?>
+
+</body>
+</html>
