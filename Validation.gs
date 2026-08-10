@@ -222,10 +222,10 @@ function cccNormalizeBooking_(payload) {
         30
       ),
 
-    country:
+    county:
       cccClean_(
-        payload.country,
-        80
+        payload.county,
+        100
       ),
 
 

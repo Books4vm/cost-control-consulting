@@ -37,6 +37,10 @@
   <section class="form-card">
 
 
+    <!-- =====================================================
+         INTRODUCTION
+    ====================================================== -->
+
     <div class="form-introduction">
 
       <h2>
@@ -44,13 +48,16 @@
       </h2>
 
       <p>
-        Tell us about your business and select an
-        available consultation time. Fields marked
-        with * are required.
+        Tell us about your business and select an available
+        consultation time. Fields marked with * are required.
       </p>
 
     </div>
 
+
+    <!-- =====================================================
+         ERROR / STATUS MESSAGE
+    ====================================================== -->
 
     <div
       id="msg"
@@ -66,10 +73,12 @@
 
 
       <!-- ==================================================
+           SECTION 1
            CONTACT INFORMATION
       =================================================== -->
 
       <section class="form-section">
+
 
         <div class="section-heading">
 
@@ -93,6 +102,7 @@
 
 
         <div class="grid">
+
 
           <label>
             First Name*
@@ -168,36 +178,54 @@
 
             </select>
 
-                <option value="Morning">
-                  Morning
-                </option>
+          </label>
 
-                <option value="Afternoon">
-                  Afternoon
-                </option>
 
-                <option value="Evening">
-                  Evening
-                </option>
+          <label>
+            Preferred Time for Ongoing Contact
 
-              </select>
+            <select
+              name="bestTimeToContact">
 
-              <span class="field-help">
-                Optional — for follow-up communication if you engage CCC.
-              </span>
+              <option value="No Preference">
+                No Preference
+              </option>
+
+              <option value="Morning">
+                Morning
+              </option>
+
+              <option value="Afternoon">
+                Afternoon
+              </option>
+
+              <option value="Evening">
+                Evening
+              </option>
+
+            </select>
+
+            <span class="field-help">
+              Optional — for follow-up communication if you
+              engage CCC after the initial consultation.
+            </span>
 
           </label>
 
+
         </div>
+
 
       </section>
 
 
       <!-- ==================================================
+           SECTION 2
            BUSINESS INFORMATION
       =================================================== -->
 
       <section class="form-section">
+
 
         <div class="section-heading">
 
@@ -216,28 +244,34 @@
               for the consultation.
             </p>
 
-            <label>
-              Years in Business
-
-              <input
-                name="yearsInBusiness"
-                placeholder="Example: 8">
-            </label>
-
-
-            <label>
-              LinkedIn Profile
-
-              <input
-                name="linkedInProfile"
-                placeholder="www.linkedin.com/company/your-company">
-
-              <span class="field-help">
-                You may enter the address normally. https:// is added automatically.
-              </span>
-            </label>
-
           </div>
+
+        </div>
+
+
+        <!-- U.S. SERVICE NOTICE -->
+
+        <div
+          style="
+            margin-bottom:22px;
+            padding:14px 16px;
+            border-left:4px solid #1f5d8f;
+            border-radius:8px;
+            background:#eef7fd;
+            color:#17324d;
+            font-size:13px;
+          ">
+
+          <strong>
+            U.S. Business Services
+          </strong>
+
+          <br>
+
+          Cost Control Consulting primarily provides services
+          to businesses located in the United States.
+          Services may not be available for companies located
+          outside the United States.
 
         </div>
 
@@ -254,56 +288,34 @@
               required>
           </label>
 
-          <div class="subsection-heading">
-              <h4>Business Address</h4>
-              <p>Optional business location information.</p>
-            </div>
 
-            <div class="grid">
+          <label>
+            Legal Name
 
-              <label>
-                Address Line 1
-                <input
-                  name="addressLine1"
-                  autocomplete="address-line1">
-              </label>
+            <input
+              name="legalName"
+              autocomplete="organization">
 
-              <label>
-                Address Line 2
-                <input
-                  name="addressLine2"
-                  autocomplete="address-line2">
-              </label>
+            <span class="field-help">
+              Enter the legal entity name if different
+              from the company name.
+            </span>
 
-              <label>
-                City
-                <input
-                  name="city"
-                  autocomplete="address-level2">
-              </label>
+          </label>
 
-              <label>
-                State / Province
-                <input
-                  name="stateProvince"
-                  autocomplete="address-level1">
-              </label>
 
-              <label>
-                ZIP / Postal Code
-                <input
-                  name="postalCode"
-                  autocomplete="postal-code">
-              </label>
+          <label>
+            DBA / Trade Name
 
-              <label>
-                Country
-                <input
-                  name="country"
-                  autocomplete="country-name">
-              </label>
+            <input
+              name="dbaTradeName">
 
-            </div>
+            <span class="field-help">
+              Enter a DBA or trade name if applicable.
+            </span>
+
+          </label>
+
 
           <label>
             Business Type*
@@ -355,6 +367,15 @@
             <input
               name="industry"
               required>
+          </label>
+
+
+          <label>
+            Years in Business
+
+            <input
+              name="yearsInBusiness"
+              placeholder="Example: 8">
           </label>
 
 
@@ -460,12 +481,149 @@
 
 
           <label>
+            LinkedIn Profile
+
+            <input
+              name="linkedInProfile"
+              placeholder="www.linkedin.com/company/your-company">
+
+            <span class="field-help">
+              You may enter the LinkedIn address normally.
+              https:// is added automatically.
+            </span>
+
+          </label>
+
+
+        </div>
+
+
+        <!-- ==================================================
+             BUSINESS ADDRESS
+        =================================================== -->
+
+        <div class="subsection-heading">
+
+          <h4>
+            Business Address
+          </h4>
+
+          <p>
+            Optional U.S. business-location information.
+          </p>
+
+        </div>
+
+
+        <div class="grid">
+
+
+          <label>
+            Address Line 1
+
+            <input
+              name="addressLine1"
+              autocomplete="address-line1">
+          </label>
+
+
+          <label>
+            Address Line 2
+
+            <input
+              name="addressLine2"
+              autocomplete="address-line2">
+          </label>
+
+
+          <label>
+            City
+
+            <input
+              name="city"
+              autocomplete="address-level2">
+          </label>
+
+
+          <label>
+            State
+
+            <input
+              name="stateProvince"
+              autocomplete="address-level1"
+              placeholder="Washington">
+
+            <span class="field-help">
+              Enter the U.S. state.
+            </span>
+
+          </label>
+
+
+          <label>
+            County
+
+            <input
+              name="county"
+              placeholder="Example: King County">
+
+            <span class="field-help">
+              Enter the county where the business is located.
+            </span>
+
+          </label>
+
+
+          <label>
+            ZIP Code
+
+            <input
+              name="postalCode"
+              autocomplete="postal-code">
+          </label>
+
+
+        </div>
+
+
+        <!-- ==================================================
+             ACCOUNTING AND BUSINESS SYSTEMS
+        =================================================== -->
+
+        <div class="subsection-heading">
+
+          <h4>
+            Accounting and Business Systems
+          </h4>
+
+          <p>
+            Optional information that can help CCC prepare
+            for the consultation.
+          </p>
+
+        </div>
+
+
+        <div class="grid">
+
+
+          <label>
             Accounting Software
 
             <input
               name="accountingSoftware"
               placeholder="QuickBooks, Xero, NetSuite, etc.">
           </label>
+
+
+          <label>
+            ERP System
+
+            <input
+              name="erpSystem"
+              placeholder="NetSuite, Oracle, SAP, etc.">
+          </label>
+
 
           <label>
             Payroll System
@@ -475,24 +633,20 @@
               placeholder="ADP, Gusto, Paychex, etc.">
           </label>
 
-          <label>
-            ERP System
-
-            <input
-              name="erpSystem">
-          </label>
-
 
         </div>
+
 
       </section>
 
 
       <!-- ==================================================
+           SECTION 3
            CONSULTATION NEEDS
       =================================================== -->
 
       <section class="form-section">
+
 
         <div class="section-heading">
 
@@ -655,6 +809,7 @@
 
           </div>
 
+
         </fieldset>
 
 
@@ -682,14 +837,17 @@
             name="additionalInformation"></textarea>
         </label>
 
+
       </section>
 
 
       <!-- ==================================================
+           SECTION 4
            APPOINTMENT CALENDAR
       =================================================== -->
 
       <section class="form-section scheduler-section">
+
 
         <div class="section-heading">
 
@@ -725,12 +883,15 @@
         <div class="scheduler-layout">
 
 
-          <!-- CALENDAR -->
+          <!-- ================================================
+               CALENDAR
+          ================================================= -->
 
           <section class="calendar-card">
 
 
             <div class="calendar-title-row">
+
 
               <div>
 
@@ -753,6 +914,7 @@
                 Refresh
 
               </button>
+
 
             </div>
 
@@ -831,12 +993,16 @@
 
             </div>
 
+
           </section>
 
 
-          <!-- TIMES -->
+          <!-- ================================================
+               AVAILABLE TIMES
+          ================================================= -->
 
           <section class="time-card">
+
 
             <h4 id="timeTitle">
               Available Times
@@ -853,22 +1019,41 @@
             </p>
 
 
-           <div
+            <!--
+              IMPORTANT:
+              JavaScript already displays this immediately
+              after the visitor selects a date and hides it
+              when the live Calendar response returns.
+            -->
+
+            <div
               id="timeLoading"
               class="time-loading time-loading-alert hidden"
               role="status"
               aria-live="polite">
 
+
               <span class="loading-indicator">
+
                 <span class="loading-dot"></span>
+
                 <span class="loading-dot"></span>
+
                 <span class="loading-dot"></span>
+
               </span>
 
+
               <span class="loading-message">
+
                 Checking available appointment times…
-                <strong>Please wait a few seconds.</strong>
+
+                <strong>
+                  Please wait a few seconds.
+                </strong>
+
               </span>
+
 
             </div>
 
@@ -906,6 +1091,7 @@
 
         <label class="consent">
 
+
           <input
             type="checkbox"
             name="consentToContact"
@@ -920,6 +1106,7 @@
 
           </span>
 
+
         </label>
 
 
@@ -928,14 +1115,17 @@
 
           <div>
 
+
             <strong>
               Ready to schedule?
             </strong>
+
 
             <p>
               Review your information above before
               confirming your appointment.
             </p>
+
 
           </div>
 
@@ -957,6 +1147,10 @@
 
     </form>
 
+
+    <!-- =====================================================
+         SUCCESS RESULT
+    ====================================================== -->
 
     <section
       id="done"

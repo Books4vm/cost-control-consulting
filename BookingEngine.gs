@@ -440,7 +440,7 @@ function confirmConsultation(payload) {
             "City": booking.city,
             "State / Province": booking.stateProvince,
             "ZIP / Postal Code": booking.postalCode,
-            "Country": booking.country,
+            "County": booking.county,
 
             "Email": booking.email,
             "Phone": booking.phone,
@@ -448,7 +448,7 @@ function confirmConsultation(payload) {
             "Preferred Contact Method":
               booking.preferredContactMethod,
 
-            "Best Time to Contact":
+            "Preferred Time for Ongoing Contact":
               booking.bestTimeToContact,
 
             "Employee Range":
@@ -896,8 +896,8 @@ function cccUpsertBusiness_(
     "ZIP / Postal Code":
       booking.postalCode,
 
-    "Country":
-      booking.country,
+    "County":
+      booking.county,
 
     "Primary Contact First Name":
       booking.firstName,

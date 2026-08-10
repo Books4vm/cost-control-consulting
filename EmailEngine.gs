@@ -364,8 +364,8 @@ function cccBuildInternalEmail_(b, i) {
 
 
   rows += row(
-    "Country",
-    b.country
+    "County",
+    b.county
   );
 
 
