@@ -1,30 +1,56 @@
 <!DOCTYPE html>
+
 <html>
+
 <head>
+
   <base target="_top">
+
   <?!= include("CSS"); ?>
+
 </head>
+
 
 <body>
 
+
 <header class="ccc-header">
+
   <div class="ccc-header-inner">
-    <h1>Cost Control Consulting</h1>
-    <p>Clarity. Confidence. Compliance.</p>
+
+    <h1>
+      Cost Control Consulting
+    </h1>
+
+    <p>
+      Clarity. Confidence. Compliance.
+    </p>
+
   </div>
+
 </header>
+
 
 <main class="page-shell">
 
-  <section class="card">
 
-    <div class="progress">
-      <span id="stepLabel">Step 1 of 4</span>
+  <section class="form-card">
 
-      <div class="progress-track">
-        <b id="bar"></b>
-      </div>
+
+    <div class="form-introduction">
+
+      <h2>
+        Schedule a Consultation
+      </h2>
+
+      <p>
+        Tell us about your business and select an
+        available consultation time. Fields marked
+        with * are required.
+      </p>
+
     </div>
+
 
     <div
       id="msg"
@@ -33,46 +59,73 @@
       aria-live="assertive">
     </div>
 
-    <form id="f" novalidate>
 
-      <!-- STEP 1 -->
-      <section
-        class="step active"
-        data-step="1">
+    <form
+      id="f"
+      novalidate>
 
-        <h2>About You</h2>
 
-        <p class="step-intro">
-          Tell us who we will be speaking with.
-        </p>
+      <!-- ==================================================
+           CONTACT INFORMATION
+      =================================================== -->
+
+      <section class="form-section">
+
+        <div class="section-heading">
+
+          <span class="section-number">
+            1
+          </span>
+
+          <div>
+
+            <h3>
+              About You
+            </h3>
+
+            <p>
+              Tell us who we will be speaking with.
+            </p>
+
+          </div>
+
+        </div>
+
 
         <div class="grid">
 
           <label>
             First Name*
+
             <input
               name="firstName"
               autocomplete="given-name"
               required>
           </label>
 
+
           <label>
             Last Name*
+
             <input
               name="lastName"
               autocomplete="family-name"
               required>
           </label>
 
+
           <label>
             Job Title
+
             <input
               name="jobTitle"
               autocomplete="organization-title">
           </label>
 
+
           <label>
             Email*
+
             <input
               name="email"
               type="email"
@@ -80,13 +133,16 @@
               required>
           </label>
 
+
           <label>
             Phone
+
             <input
               name="phone"
               type="tel"
               autocomplete="tel">
           </label>
+
 
           <label>
             Preferred Contact Method
@@ -98,37 +154,67 @@
                 Select
               </option>
 
-              <option>Email</option>
-              <option>Phone</option>
-              <option>Video Conference</option>
+              <option>
+                Email
+              </option>
+
+              <option>
+                Phone
+              </option>
+
+              <option>
+                Video Conference
+              </option>
 
             </select>
+
           </label>
 
         </div>
+
       </section>
 
 
-      <!-- STEP 2 -->
-      <section
-        class="step"
-        data-step="2">
+      <!-- ==================================================
+           BUSINESS INFORMATION
+      =================================================== -->
 
-        <h2>About Your Business</h2>
+      <section class="form-section">
 
-        <p class="step-intro">
-          Provide a few details so we can prepare for the consultation.
-        </p>
+        <div class="section-heading">
+
+          <span class="section-number">
+            2
+          </span>
+
+          <div>
+
+            <h3>
+              About Your Business
+            </h3>
+
+            <p>
+              Provide a few details so we can prepare
+              for the consultation.
+            </p>
+
+          </div>
+
+        </div>
+
 
         <div class="grid">
 
+
           <label>
             Company Name*
+
             <input
               name="companyName"
               autocomplete="organization"
               required>
           </label>
+
 
           <label>
             Business Type*
@@ -170,14 +256,18 @@
               </option>
 
             </select>
+
           </label>
+
 
           <label>
             Industry*
+
             <input
               name="industry"
               required>
           </label>
+
 
           <label>
             Employees
@@ -189,16 +279,38 @@
                 Select
               </option>
 
-              <option>1</option>
-              <option>2-10</option>
-              <option>11-25</option>
-              <option>26-50</option>
-              <option>51-100</option>
-              <option>101-250</option>
-              <option>251+</option>
+              <option>
+                1
+              </option>
+
+              <option>
+                2-10
+              </option>
+
+              <option>
+                11-25
+              </option>
+
+              <option>
+                26-50
+              </option>
+
+              <option>
+                51-100
+              </option>
+
+              <option>
+                101-250
+              </option>
+
+              <option>
+                251+
+              </option>
 
             </select>
+
           </label>
+
 
           <label>
             Annual Revenue
@@ -210,50 +322,102 @@
                 Select
               </option>
 
-              <option>Pre-revenue</option>
-              <option>Under $250,000</option>
-              <option>$250,000-$999,999</option>
-              <option>$1M-$4.99M</option>
-              <option>$5M-$24.99M</option>
-              <option>$25M-$99.99M</option>
-              <option>$100M+</option>
+              <option>
+                Pre-revenue
+              </option>
+
+              <option>
+                Under $250,000
+              </option>
+
+              <option>
+                $250,000-$999,999
+              </option>
+
+              <option>
+                $1M-$4.99M
+              </option>
+
+              <option>
+                $5M-$24.99M
+              </option>
+
+              <option>
+                $25M-$99.99M
+              </option>
+
+              <option>
+                $100M+
+              </option>
 
             </select>
+
           </label>
+
 
           <label>
             Website
+
             <input
               name="website"
-              placeholder="https://">
+              placeholder="www.company.com">
+
+            <span class="field-help">
+              You may enter the website normally.
+              https:// is added automatically.
+            </span>
+
           </label>
+
 
           <label>
             Accounting Software
+
             <input
-              name="accountingSoftware">
+              name="accountingSoftware"
+              placeholder="QuickBooks, Xero, NetSuite, etc.">
           </label>
+
 
           <label>
             ERP System
+
             <input
               name="erpSystem">
           </label>
 
+
         </div>
+
       </section>
 
 
-      <!-- STEP 3 -->
-      <section
-        class="step"
-        data-step="3">
+      <!-- ==================================================
+           CONSULTATION NEEDS
+      =================================================== -->
 
-        <h2>How Can We Help?</h2>
+      <section class="form-section">
 
-        <p class="step-intro">
-          Tell us what you would like to discuss.
-        </p>
+        <div class="section-heading">
+
+          <span class="section-number">
+            3
+          </span>
+
+          <div>
+
+            <h3>
+              How Can We Help?
+            </h3>
+
+            <p>
+              Tell us what you would like to discuss.
+            </p>
+
+          </div>
+
+        </div>
+
 
         <label>
           Primary Service*
@@ -307,6 +471,7 @@
             </option>
 
           </select>
+
         </label>
 
 
@@ -316,55 +481,81 @@
             Business Challenges
           </legend>
 
+
           <div class="checks">
 
+
             <label>
+
               <input
                 type="checkbox"
                 name="businessChallenges"
                 value="Cash Flow">
+
               Cash Flow
+
             </label>
 
+
             <label>
+
               <input
                 type="checkbox"
                 name="businessChallenges"
                 value="Profitability">
+
               Profitability
+
             </label>
 
+
             <label>
+
               <input
                 type="checkbox"
                 name="businessChallenges"
                 value="Cost Control">
+
               Cost Control
+
             </label>
 
+
             <label>
+
               <input
                 type="checkbox"
                 name="businessChallenges"
                 value="Internal Controls">
+
               Internal Controls
+
             </label>
 
+
             <label>
+
               <input
                 type="checkbox"
                 name="businessChallenges"
                 value="Reporting">
+
               Reporting
+
             </label>
 
+
             <label>
+
               <input
                 type="checkbox"
                 name="businessChallenges"
                 value="Compliance">
+
               Compliance
+
             </label>
+
 
           </div>
 
@@ -387,51 +578,84 @@
             name="desiredOutcome"></textarea>
         </label>
 
+
+        <label>
+          Additional Information
+
+          <textarea
+            name="additionalInformation"></textarea>
+        </label>
+
       </section>
 
 
-      <!-- STEP 4 -->
-      <section
-        class="step"
-        data-step="4">
+      <!-- ==================================================
+           APPOINTMENT CALENDAR
+      =================================================== -->
 
-        <div class="scheduler-heading">
+      <section class="form-section scheduler-section">
+
+        <div class="section-heading">
+
+          <span class="section-number">
+            4
+          </span>
 
           <div>
-            <h2>Choose Date and Time</h2>
 
-            <p class="step-intro">
-              Select an available consultation date and then choose a time.
+            <h3>
+              Choose Date and Time
+            </h3>
+
+            <p>
+              Select a green available date and then
+              choose an appointment time.
             </p>
+
           </div>
 
-          <div class="timezone-badge">
+        </div>
+
+
+        <div class="timezone-row">
+
+          <span class="timezone-badge">
             Pacific Time
-          </div>
+          </span>
 
         </div>
 
 
         <div class="scheduler-layout">
 
+
           <!-- CALENDAR -->
+
           <section class="calendar-card">
+
 
             <div class="calendar-title-row">
 
               <div>
-                <h3>Available Dates</h3>
+
+                <h4>
+                  Available Dates
+                </h4>
 
                 <p>
                   Next five weeks
                 </p>
+
               </div>
+
 
               <button
                 type="button"
                 id="refreshCalendar"
                 class="text-button">
+
                 Refresh
+
               </button>
 
             </div>
@@ -441,20 +665,33 @@
               class="calendar-legend"
               aria-label="Calendar availability legend">
 
+
               <span>
+
                 <i class="legend-dot available"></i>
+
                 Available
+
               </span>
 
+
               <span>
+
                 <i class="legend-dot full"></i>
+
                 Full
+
               </span>
 
+
               <span>
+
                 <i class="legend-dot unavailable"></i>
+
                 Unavailable
+
               </span>
+
 
             </div>
 
@@ -462,13 +699,16 @@
             <div
               id="calendarLoading"
               class="calendar-loading">
-              Checking CCC calendar availability...
+
+              Starting secure scheduling session...
+
             </div>
 
 
             <div
               id="calendarContent"
               class="hidden">
+
 
               <div
                 class="calendar-weekdays"
@@ -484,6 +724,7 @@
 
               </div>
 
+
               <div
                 id="calendarGrid"
                 class="calendar-grid"
@@ -491,29 +732,39 @@
                 aria-label="Available consultation dates">
               </div>
 
+
             </div>
 
           </section>
 
 
           <!-- TIMES -->
+
           <section class="time-card">
 
-            <h3 id="timeTitle">
+            <h4 id="timeTitle">
               Available Times
-            </h3>
+            </h4>
+
 
             <p
               id="timeHelp"
               class="time-help">
-              Choose a green available date to view appointment times.
+
+              Choose a green available date to view
+              appointment times.
+
             </p>
+
 
             <div
               id="timeLoading"
               class="time-loading hidden">
+
               Checking available times...
+
             </div>
+
 
             <div
               id="timeGrid"
@@ -522,7 +773,9 @@
               aria-label="Available appointment times">
             </div>
 
+
           </section>
+
 
         </div>
 
@@ -534,6 +787,16 @@
         </div>
 
 
+      </section>
+
+
+      <!-- ==================================================
+           CONSENT / CONFIRM
+      =================================================== -->
+
+      <section class="form-section final-section">
+
+
         <label class="consent">
 
           <input
@@ -541,41 +804,49 @@
             name="consentToContact"
             required>
 
+
           <span>
+
             I confirm the information above and authorize
             Cost Control Consulting to contact me regarding
             this consultation request.
+
           </span>
 
         </label>
 
+
+        <div class="confirm-area">
+
+
+          <div>
+
+            <strong>
+              Ready to schedule?
+            </strong>
+
+            <p>
+              Review your information above before
+              confirming your appointment.
+            </p>
+
+          </div>
+
+
+          <button
+            type="submit"
+            id="confirm">
+
+            Confirm Appointment
+
+          </button>
+
+
+        </div>
+
+
       </section>
 
-
-      <!-- ACTIONS -->
-      <div class="actions">
-
-        <button
-          type="button"
-          id="back"
-          class="secondary">
-          Back
-        </button>
-
-        <button
-          type="button"
-          id="next">
-          Next
-        </button>
-
-        <button
-          type="submit"
-          id="confirm"
-          class="hidden">
-          Confirm Appointment
-        </button>
-
-      </div>
 
     </form>
 
@@ -586,17 +857,23 @@
       aria-live="polite">
     </section>
 
+
   </section>
+
 
 </main>
 
 
 <footer class="ccc-footer">
+
   Cost Control Consulting
+
 </footer>
 
 
 <?!= include("JavaScript"); ?>
 
+
 </body>
+
 </html>
