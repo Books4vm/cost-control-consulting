@@ -168,6 +168,24 @@
 
             </select>
 
+                <option value="Morning">
+                  Morning
+                </option>
+
+                <option value="Afternoon">
+                  Afternoon
+                </option>
+
+                <option value="Evening">
+                  Evening
+                </option>
+
+              </select>
+
+              <span class="field-help">
+                Optional — for follow-up communication if you engage CCC.
+              </span>
+
           </label>
 
         </div>
@@ -198,6 +216,27 @@
               for the consultation.
             </p>
 
+            <label>
+              Years in Business
+
+              <input
+                name="yearsInBusiness"
+                placeholder="Example: 8">
+            </label>
+
+
+            <label>
+              LinkedIn Profile
+
+              <input
+                name="linkedInProfile"
+                placeholder="www.linkedin.com/company/your-company">
+
+              <span class="field-help">
+                You may enter the address normally. https:// is added automatically.
+              </span>
+            </label>
+
           </div>
 
         </div>
@@ -215,6 +254,56 @@
               required>
           </label>
 
+          <div class="subsection-heading">
+              <h4>Business Address</h4>
+              <p>Optional business location information.</p>
+            </div>
+
+            <div class="grid">
+
+              <label>
+                Address Line 1
+                <input
+                  name="addressLine1"
+                  autocomplete="address-line1">
+              </label>
+
+              <label>
+                Address Line 2
+                <input
+                  name="addressLine2"
+                  autocomplete="address-line2">
+              </label>
+
+              <label>
+                City
+                <input
+                  name="city"
+                  autocomplete="address-level2">
+              </label>
+
+              <label>
+                State / Province
+                <input
+                  name="stateProvince"
+                  autocomplete="address-level1">
+              </label>
+
+              <label>
+                ZIP / Postal Code
+                <input
+                  name="postalCode"
+                  autocomplete="postal-code">
+              </label>
+
+              <label>
+                Country
+                <input
+                  name="country"
+                  autocomplete="country-name">
+              </label>
+
+            </div>
 
           <label>
             Business Type*
@@ -378,6 +467,13 @@
               placeholder="QuickBooks, Xero, NetSuite, etc.">
           </label>
 
+          <label>
+            Payroll System
+
+            <input
+              name="payrollSystem"
+              placeholder="ADP, Gusto, Paychex, etc.">
+          </label>
 
           <label>
             ERP System
@@ -757,11 +853,22 @@
             </p>
 
 
-            <div
+           <div
               id="timeLoading"
-              class="time-loading hidden">
+              class="time-loading time-loading-alert hidden"
+              role="status"
+              aria-live="polite">
 
-              Checking available times...
+              <span class="loading-indicator">
+                <span class="loading-dot"></span>
+                <span class="loading-dot"></span>
+                <span class="loading-dot"></span>
+              </span>
+
+              <span class="loading-message">
+                Checking available appointment times…
+                <strong>Please wait a few seconds.</strong>
+              </span>
 
             </div>
 
